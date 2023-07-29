@@ -8,11 +8,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
-      redirect: "/twid",
-    },
-    {
-      path: '/twid',
+      path: '/',
       name: 'twid',
       component: Twid,
       root: true
