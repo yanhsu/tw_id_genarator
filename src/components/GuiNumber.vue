@@ -1,17 +1,24 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,reactive } from 'vue'
 import { isGuiNumberValid } from 'taiwan-id-validator'
 import RandExp from 'randexp';
 let count = ref(10);
 let showId = ref(true);
+let ids = reactive([]);
+onMounted(()=> {
+  gen();
+})
 const gen = () => {
-  let val = '';
+  ids.length = 0;
   showId.value = false;
-  while(!isGuiNumberValid(val, true)) {
-    val = new RandExp(/^[0-9]{8}$/).gen();
+  for(let i = 0; i < count.value; i++) {
+    let val = '';
+    while(!isGuiNumberValid(val, true)) {
+      val = new RandExp(/^[0-9]{8}$/).gen();
+    }
+    ids.push(val);
   }
   showId.value = true;
-  return val;
 }
 </script>
 
@@ -24,11 +31,11 @@ const gen = () => {
         <label>數量:</label>
       </b-col>
       <b-col sm="3">
-        <b-form-input id="type-number" v-model="count" type="number"/>
+        <b-form-input id="type-number" min="1" v-model="count" type="number" @input="gen"/>
       </b-col>
       <b-col sm="4"/>
     </b-row>
-      <p v-for="i in Number(count)" v-if="showId">{{ gen() }}</p>&nbsp;
+      <p v-for="i in ids" v-show="showId">{{ i }}</p>&nbsp;
     </div>
 </template>
 
